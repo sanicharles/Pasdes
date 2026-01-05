@@ -1,0 +1,7 @@
+{
+  "name": "Copy of PASDES WANITA TANGGUH",
+  "description": "A marketplace web application for rural communities, especially women, to sell their products. Transactions are facilitated through WhatsApp.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
