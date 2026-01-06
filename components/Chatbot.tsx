@@ -42,7 +42,7 @@ const Chatbot: React.FC = () => {
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
             const response = await ai.models.generateContent({
-                model: 'gemini-3-pro-preview',
+                model: 'gemini-3-flash-preview',
                 contents: input,
             });
             const botMessage: ChatMessage = { sender: 'bot', text: response.text as string };
