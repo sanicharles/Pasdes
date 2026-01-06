@@ -508,7 +508,9 @@ const App: React.FC = () => {
         }
         
         const newUser: User = { id: `user-${Date.now()}`, name, whatsapp: fullWhatsapp, village, role: UserRole.MEMBER, isVerified: false, password };
-        setUsers(prev => [...prev, newUser]);
+        const updatedUsers = [...users, newUser];
+        setUsers(updatedUsers);
+        mockUsers = updatedUsers;
         setCurrentUser(newUser);
         setLoginModalOpen(false);
         setNotification('Pendaftaran berhasil! Akun Anda akan diverifikasi Admin.');
@@ -521,6 +523,7 @@ const App: React.FC = () => {
         if (existingUser && existingUser.password === password) {
             setCurrentUser(existingUser);
             setLoginModalOpen(false);
+            setNotification(`Selamat datang kembali, ${existingUser.name}!`);
         } else {
             alert('Nomor WhatsApp atau password salah. Silakan periksa kembali atau daftar terlebih dahulu.');
         }
@@ -533,6 +536,7 @@ const App: React.FC = () => {
         if (adminUser && fullWhatsapp === adminWhatsapp && password === ADMIN_PASSWORD) {
             setCurrentUser(adminUser);
             setLoginModalOpen(false);
+            setNotification(`Selamat datang, Admin!`);
         } else {
             alert('Login Gagal. Nomor WhatsApp atau password yang Anda masukkan salah.');
         }

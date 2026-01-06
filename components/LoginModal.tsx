@@ -81,7 +81,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onMemberRegist
                 className="bg-brand-white p-8 rounded-2xl shadow-2xl w-full max-w-md animate-slide-up"
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* FIX: Added required 'children' prop to TabButton components to display tab labels. */}
+                {/* FIX: Add required 'children' prop to TabButton components. */}
                 <div className="flex border-b border-gray-200 mb-6">
                     <TabButton tab="member">Anggota</TabButton>
                     <TabButton tab="admin">Admin</TabButton>
