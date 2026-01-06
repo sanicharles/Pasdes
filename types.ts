@@ -11,6 +11,7 @@ export interface User {
   village: string;
   role: UserRole;
   isVerified: boolean;
+  password?: string;
 }
 
 export interface Product {

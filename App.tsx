@@ -17,10 +17,10 @@ const ADMIN_PASSWORD = 'wanitahebat2024';
 
 // MOCK DATA
 let mockUsers: User[] = [
-    { id: 'user-1', name: 'Ibu Siti', whatsapp: '6281111111111', village: 'Desa Sukamaju', role: UserRole.MEMBER, isVerified: true },
-    { id: 'user-2', name: 'Mbak Yuni', whatsapp: '6282222222222', village: 'Desa Makmur', role: UserRole.MEMBER, isVerified: true },
-    { id: 'user-3', name: 'Bapak Agus', whatsapp: '6283333333333', village: 'Desa Asri', role: UserRole.MEMBER, isVerified: false },
-    { id: 'user-4', name: 'Wati', whatsapp: '6284444444444', village: 'Sukamaju', role: UserRole.MEMBER, isVerified: true },
+    { id: 'user-1', name: 'Ibu Siti', whatsapp: '6281111111111', village: 'Desa Sukamaju', role: UserRole.MEMBER, isVerified: true, password: 'password123' },
+    { id: 'user-2', name: 'Mbak Yuni', whatsapp: '6282222222222', village: 'Desa Makmur', role: UserRole.MEMBER, isVerified: true, password: 'password123' },
+    { id: 'user-3', name: 'Bapak Agus', whatsapp: '6283333333333', village: 'Desa Asri', role: UserRole.MEMBER, isVerified: false, password: 'password123' },
+    { id: 'user-4', name: 'Wati', whatsapp: '6284444444444', village: 'Sukamaju', role: UserRole.MEMBER, isVerified: true, password: 'password123' },
     { id: 'user-admin', name: 'Admin Desa', whatsapp: INITIAL_ADMIN_WHATSAPP, village: 'Kantor Desa', role: UserRole.ADMIN, isVerified: true },
 ];
 
@@ -498,7 +498,7 @@ const App: React.FC = () => {
     }, [users]);
     const hasNewProducts = newProductIdsForNotification.length > 0;
 
-    const handleMemberRegister = (name: string, whatsapp: string, village: string) => {
+    const handleMemberRegister = (name: string, whatsapp: string, village: string, password: string) => {
         const fullWhatsapp = '62' + whatsapp;
         const existingUser = users.find(u => u.whatsapp === fullWhatsapp);
         
@@ -507,22 +507,22 @@ const App: React.FC = () => {
             return;
         }
         
-        const newUser: User = { id: `user-${Date.now()}`, name, whatsapp: fullWhatsapp, village, role: UserRole.MEMBER, isVerified: false };
+        const newUser: User = { id: `user-${Date.now()}`, name, whatsapp: fullWhatsapp, village, role: UserRole.MEMBER, isVerified: false, password };
         setUsers(prev => [...prev, newUser]);
         setCurrentUser(newUser);
         setLoginModalOpen(false);
         setNotification('Pendaftaran berhasil! Akun Anda akan diverifikasi Admin.');
     };
 
-    const handleMemberLogin = (whatsapp: string) => {
+    const handleMemberLogin = (whatsapp: string, password: string) => {
         const fullWhatsapp = '62' + whatsapp;
         const existingUser = users.find(u => u.whatsapp === fullWhatsapp && u.role === UserRole.MEMBER);
 
-        if (existingUser) {
+        if (existingUser && existingUser.password === password) {
             setCurrentUser(existingUser);
             setLoginModalOpen(false);
         } else {
-            alert('Anggota tidak ditemukan. Silakan periksa kembali nomor Anda atau daftar terlebih dahulu.');
+            alert('Nomor WhatsApp atau password salah. Silakan periksa kembali atau daftar terlebih dahulu.');
         }
     };
 

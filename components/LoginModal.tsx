@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 
 interface LoginModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onMemberRegister: (name: string, whatsapp: string, village: string) => void;
-    onMemberLogin: (whatsapp: string) => void;
+    onMemberRegister: (name: string, whatsapp: string, village: string, password: string) => void;
+    onMemberLogin: (whatsapp: string, password: string) => void;
     onAdminLogin: (whatsapp: string, password: string) => void;
     adminWhatsappNumber: string;
 }
@@ -17,16 +16,25 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onMemberRegist
     const [name, setName] = useState('');
     const [whatsapp, setWhatsapp] = useState('');
     const [village, setVillage] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
     const [adminWhatsapp, setAdminWhatsapp] = useState('');
     const [adminPassword, setAdminPassword] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (activeTab === 'member') {
-            if (authMode === 'register' && name && whatsapp && village) {
-                onMemberRegister(name, whatsapp, village);
-            } else if (authMode === 'login' && whatsapp) {
-                onMemberLogin(whatsapp);
+            if (authMode === 'register') {
+                if (password !== confirmPassword) {
+                    alert('Password dan konfirmasi password tidak cocok.');
+                    return;
+                }
+                if (name && whatsapp && village && password) {
+                    onMemberRegister(name, whatsapp, village, password);
+                }
+            } else if (authMode === 'login' && whatsapp && password) {
+                onMemberLogin(whatsapp, password);
             }
         } else if (activeTab === 'admin' && adminWhatsapp && adminPassword) {
             onAdminLogin(adminWhatsapp, adminPassword);
@@ -37,6 +45,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onMemberRegist
         setName('');
         setWhatsapp('');
         setVillage('');
+        setPassword('');
+        setConfirmPassword('');
         setAdminWhatsapp('');
         setAdminPassword('');
     };
@@ -72,6 +82,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onMemberRegist
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex border-b border-gray-200 mb-6">
+                    {/* Fix: Added children to TabButton components */}
                     <TabButton tab="member">Anggota</TabButton>
                     <TabButton tab="admin">Admin</TabButton>
                 </div>
@@ -102,6 +113,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onMemberRegist
                                         <label htmlFor="village" className="block text-sm font-medium text-gray-900">Nama Desa</label>
                                         <input type="text" id="village" value={village} onChange={(e) => setVillage(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-white border border-brand-pink rounded-md shadow-sm focus:outline-none focus:ring-brand-gold focus:border-brand-gold" required />
                                     </div>
+                                    <div>
+                                        <label htmlFor="password" className="block text-sm font-medium text-gray-900">Password</label>
+                                        <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-white border border-brand-pink rounded-md shadow-sm focus:outline-none focus:ring-brand-gold focus:border-brand-gold" required />
+                                    </div>
+                                     <div>
+                                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-900">Konfirmasi Password</label>
+                                        <input type="password" id="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-white border border-brand-pink rounded-md shadow-sm focus:outline-none focus:ring-brand-gold focus:border-brand-gold" required />
+                                    </div>
                                 </>
                             ) : (
                                 <>
@@ -112,6 +131,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onMemberRegist
                                             <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-brand-pink bg-gray-50 text-gray-500 text-sm">+62</span>
                                             <input type="tel" id="loginWhatsapp" placeholder="8123456789" value={whatsapp} onChange={(e) => setWhatsapp(e.target.value.replace(/\D/g, ''))} className="mt-1 block w-full px-3 py-2 bg-white border border-brand-pink rounded-r-md shadow-sm focus:outline-none focus:ring-brand-gold focus:border-brand-gold" required />
                                         </div>
+                                    </div>
+                                    <div>
+                                        <label htmlFor="loginPassword" className="block text-sm font-medium text-gray-900">Password</label>
+                                        <input type="password" id="loginPassword" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-white border border-brand-pink rounded-md shadow-sm focus:outline-none focus:ring-brand-gold focus:border-brand-gold" required />
                                     </div>
                                 </>
                             )}
